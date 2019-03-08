@@ -41,8 +41,7 @@ git remote -vv
 
 #验证代码是否能正常启动
 #启动后可通过浏览器访问，默认地址http://localhost:9080
-mvn clean package
-java -jar target/kbc-template-nf-0.0.1-SNAPSHOT.jar
+mvn spring-boot:run
 
 #开发代码，其中可能修改项目代码，也可能修改组件代码...（此处省略10000字）
 
