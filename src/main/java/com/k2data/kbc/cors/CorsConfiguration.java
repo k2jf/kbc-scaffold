@@ -48,18 +48,6 @@ public class CorsConfiguration implements WebMvcConfigurer {
         return new RequestContextListener();
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/webui/**").addResourceLocations("classpath:/dist/");
-    }
-
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        String homePage = "/%s/index.html";
-        registry.addViewController("/").setViewName("forward:" + String.format(homePage, "webui"));
-        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-    }
-
     class MyFilter implements Filter {
 
         protected String allowMethods;
