@@ -15,7 +15,7 @@ zhanghao
 #git 1.8或以上版本
 
 #从项目repo里下载代码（有可能是一个空目录，也有可能是已经开发一半的项目）
-git clone git@github.com:k2jf/kfc-demo.git project1
+git clone git@github.com:k2jf/kbc-demo.git project1
 cd project1
 
 #从组件库repo里下载框架代码（用--allow-unrelated-histories强制下载非当前repo里的代码到当前目录）
