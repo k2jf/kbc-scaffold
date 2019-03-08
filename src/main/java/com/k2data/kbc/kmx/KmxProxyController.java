@@ -15,6 +15,16 @@ public class KmxProxyController {
     @Value("${kbc.kmx.url}")
     private String kmxUrl;
 
+    @Value("${kbc.kmx.k2key}")
+    private String kmxK2Key;
+
+    /**
+     * 转发来自前端的KMX请求
+     * TODO: ip地址是否需要配置并解析？
+     *
+     * @param path kmx访问路径，不含地址
+     * @return
+     */
     @RequestMapping(value = "kmx/{path}")
     public String kmx(@PathVariable String path) {
         return "access " + kmxUrl + "/" + path;
