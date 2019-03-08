@@ -15,8 +15,8 @@ public class KmxProxyController {
     @Value("${kbc.kmx.url}")
     private String kmxUrl;
 
-    @RequestMapping(value = "/kmx")
-    public String hello(@PathVariable String path) {
+    @RequestMapping(value = "kmx/{path}")
+    public String kmx(@PathVariable String path) {
         return "access " + kmxUrl + "/" + path;
     }
 }
