@@ -10,5 +10,6 @@ zhanghao
 ## 使用说明
 ```
 mvn clean package
-java -jar target/kbc-template-nf-0.0.1-SNAPSHOT.jar --server.port=8000
+java -jar target/kbc-template-nf-0.0.1-SNAPSHOT.jar
 ```
+默认地址：localhost:9080
