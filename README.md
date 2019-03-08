@@ -8,7 +8,7 @@ wangyanan
 zhanghao
 
 ## 使用说明
-```
+```shell
 #环境要求：
 #java 8或以上版本
 #maven 3或以上版本
