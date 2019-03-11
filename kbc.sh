@@ -10,14 +10,28 @@ then
     echo $cmd2
     $cmd2
   else
-    echo "wrong parameter count"
+    echo "Usage: kbc add <component> <branch>"
   fi
 elif [ $1 == "pull" ]
 then
-  echo "pulling"
+  if [ $# == 3 ]
+  then
+    cmd1="git subtree pull -P src/main/java/com/k2data/${2//-//} $2 $3"
+    echo $cmd1
+    $cmd1
+  else
+    echo "Usage: kbc pull <component> <branch>"
+  fi
 elif [ $1 == "push" ]
 then
-  echo "pushing"
+  if [ $# == 3 ]
+  then
+    cmd1="git subtree push -P src/main/java/com/k2data/${2//-//} $2 $3"
+    echo $cmd1
+    $cmd1
+  else
+    echo "Usage: kbc push <component> <branch>"
+  fi
 else
   echo "unknown command: $1"
 fi
