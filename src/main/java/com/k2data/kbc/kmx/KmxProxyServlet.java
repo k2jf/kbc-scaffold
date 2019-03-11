@@ -2,7 +2,6 @@ package com.k2data.kbc.kmx;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
-import org.apache.http.client.utils.URIUtils;
 import org.apache.http.message.BasicHeader;
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
 
@@ -10,17 +9,48 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by zhanghao on 2019/3/11.
  */
 public class KmxProxyServlet extends ProxyServlet {
 
+    /**
+     * 用于根据url确定kmx端口号的映射表
+     * (data_service/v2, 8081)
+     * (data_service/v3, 8082)
+     * ...
+     */
+    private Map<String, Integer> portMap;
+
+    public KmxProxyServlet(Map<String, Integer> portMap) {
+        this.portMap = portMap;
+    }
+
     @Override
     protected void service(HttpServletRequest servletRequest, HttpServletResponse servletResponse)
             throws ServletException, IOException {
-        servletRequest.setAttribute(ATTR_TARGET_HOST, new HttpHost("10.12.20.36", 28091));
-//        servletRequest.setAttribute(ATTR_TARGET_URI, "test");
+
+        //1、会被添加到targetUrl
+        //2、为正确处理port，必须在处理port前设置，否则会产生"null"在targetUrl里
+        servletRequest.setAttribute(ATTR_TARGET_URI, "");
+
+        //查找kmx对应的端口号
+        int port = 0;
+        String kmxUrl = rewriteUrlFromRequest(servletRequest); //例如：/auth-service/v1/users?page=1&size=5
+        for (String prefix : portMap.keySet()) {
+            if (kmxUrl.startsWith(prefix) || kmxUrl.startsWith("/" + prefix)) {
+                port = portMap.get(prefix);
+                break;
+            }
+        }
+        if (port == 0) {
+            log("Failed to match kmx port: " + kmxUrl);
+            throw new ServletException("Failed to match kmx port: " + kmxUrl);
+        }
+
+        servletRequest.setAttribute(ATTR_TARGET_HOST, new HttpHost(getConfigParam("targetHost"), port));
         super.service(servletRequest, servletResponse);
     }
 

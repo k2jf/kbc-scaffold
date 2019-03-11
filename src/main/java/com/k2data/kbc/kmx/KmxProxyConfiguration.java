@@ -1,15 +1,14 @@
 package com.k2data.kbc.kmx;
 
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
-import org.mitre.dsmiley.httpproxy.URITemplateProxyServlet;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
-import org.springframework.web.filter.HiddenHttpMethodFilter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by zhanghao on 2019/3/8.
@@ -18,16 +17,57 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
 @Configuration
 public class KmxProxyConfiguration {
 
-    @Value("${kbc.kmx.url}")
-    private String kmxUrl;
+    @Value("${kbc.kmx.ip}")
+    private String kmxIp;
 
     @Value("${kbc.kmx.k2key}")
     private String kmxK2Key;
 
+    @Value("${kbc.kmx.port.data.service.v2}")
+    private String kmxPortDataServiceV2;
+
+    @Value("${kbc.kmx.port.data.service.v3}")
+    private String kmxPortDataServiceV3;
+
+    @Value("${kbc.kmx.port.batch.rest}")
+    private String kmxPortBatchRest;
+
+    @Value("${kbc.kmx.port.object.rest}")
+    private String kmxPortObjectRest;
+
+    @Value("${kbc.kmx.port.file.rest}")
+    private String kmxPortFileRest;
+
+    @Value("${kbc.kmx.port.pas.services}")
+    private String kmxPortPasServices;
+
+    @Value("${kbc.kmx.port.ecf.rest}")
+    private String kmxPortEcfRest;
+
+    @Value("${kbc.kmx.port.meter.v1}")
+    private String kmxPortMeterV1;
+
+    @Value("${kbc.kmx.port.auth.service}")
+    private String kmxPortAuthService;
+
     @Bean
     public ServletRegistrationBean servletRegistrationBean() {
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new KmxProxyServlet(), "/kmx/*");
-        servletRegistrationBean.addInitParameter("targetHost", kmxUrl );
+
+        //直接读取application.properties为map类型有问题
+        //使用代码构造map传递给KmxProxyServlet
+        Map<String, Integer> portMap = new HashMap();
+        portMap.put("data-service/v2", Integer.parseInt(kmxPortDataServiceV2));
+        portMap.put("data-service/v3", Integer.parseInt(kmxPortDataServiceV3));
+        portMap.put("batch-rest", Integer.parseInt(kmxPortBatchRest));
+        portMap.put("object-rest", Integer.parseInt(kmxPortObjectRest));
+        portMap.put("file-rest", Integer.parseInt(kmxPortFileRest));
+        portMap.put("pas-services",Integer.parseInt( kmxPortPasServices));
+        portMap.put("ecf-rest", Integer.parseInt(kmxPortEcfRest));
+        portMap.put("meter/v1", Integer.parseInt(kmxPortMeterV1));
+        portMap.put("auth-service", Integer.parseInt(kmxPortAuthService));
+
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new KmxProxyServlet(portMap), "/kmx/*");
+        servletRegistrationBean.addInitParameter("targetHost", kmxIp);
         servletRegistrationBean.addInitParameter("targetUri", "");
         servletRegistrationBean.addInitParameter("k2key", kmxK2Key);
         servletRegistrationBean.addInitParameter(ProxyServlet.P_LOG, "true");
