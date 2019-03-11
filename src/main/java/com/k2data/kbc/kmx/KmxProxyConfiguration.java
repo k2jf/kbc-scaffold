@@ -2,7 +2,6 @@ package com.k2data.kbc.kmx;
 
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,13 +11,16 @@ import java.util.Map;
 
 /**
  * Created by zhanghao on 2019/3/8.
+ * 将代理servlet注册到环境（省去在web.xml里注册），注册时配置了若干参数，这些参数在application.properties中可配置。
+ *
+ * 基于第三方类库实现
  * https://github.com/mitre/HTTP-Proxy-Servlet
  */
 @Configuration
 public class KmxProxyConfiguration {
 
-    @Value("${kbc.kmx.ip}")
-    private String kmxIp;
+    @Value("${kbc.kmx.host}")
+    private String kmxHost;
 
     @Value("${kbc.kmx.k2key}")
     private String kmxK2Key;
@@ -67,7 +69,7 @@ public class KmxProxyConfiguration {
         portMap.put("auth-service", Integer.parseInt(kmxPortAuthService));
 
         ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new KmxProxyServlet(portMap), "/kmx/*");
-        servletRegistrationBean.addInitParameter("targetHost", kmxIp);
+        servletRegistrationBean.addInitParameter("targetHost", kmxHost);
         servletRegistrationBean.addInitParameter("targetUri", "");
         servletRegistrationBean.addInitParameter("k2key", kmxK2Key);
         servletRegistrationBean.addInitParameter(ProxyServlet.P_LOG, "true");

@@ -13,6 +13,10 @@ import java.util.Map;
 
 /**
  * Created by zhanghao on 2019/3/11.
+ * 将前端发来的http请求转发给kmx环境（/kmx/*），其中做了如下处理：
+ * 1、添加K2_KEY到header
+ * 2、根据application.properties里的配置，自动查找正确的端口号
+ * 3、QueryString保持不变
  */
 public class KmxProxyServlet extends ProxyServlet {
 
@@ -46,11 +50,18 @@ public class KmxProxyServlet extends ProxyServlet {
             }
         }
         if (port == 0) {
-            log("Failed to match kmx port: " + kmxUrl);
-            throw new ServletException("Failed to match kmx port: " + kmxUrl);
+            throw new ServletException("Failed to find kmx port: " + kmxUrl);
         }
 
-        servletRequest.setAttribute(ATTR_TARGET_HOST, new HttpHost(getConfigParam("targetHost"), port));
+        String kmxHost = getConfigParam("targetHost");
+        if (kmxHost == null || kmxHost.length() == 0) {
+            throw new ServletException("Kmx host must not be empty");
+        }
+        if (kmxHost.indexOf(":") > 0) {
+            throw new ServletException("Kmx host must not include port number: " + kmxHost);
+        }
+        servletRequest.setAttribute(ATTR_TARGET_HOST, new HttpHost(kmxHost, port));
+
         super.service(servletRequest, servletResponse);
     }
 
