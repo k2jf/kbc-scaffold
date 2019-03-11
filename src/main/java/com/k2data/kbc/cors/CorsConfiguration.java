@@ -1,6 +1,8 @@
 package com.k2data.kbc.cors;
 
+import org.mitre.dsmiley.httpproxy.ProxyServlet;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
