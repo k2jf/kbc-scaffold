@@ -9,7 +9,6 @@ import java.io.IOException;
 /**
  * Created by zhanghao on 2019/3/12.
  * TODO: @CrossOrigin注解未能生效(https://spring.io/guides/gs/rest-service-cors/)，暂时使用filter方案
- * <p>
  * https://www.cnblogs.com/yoyotl/p/7090996.html
  */
 @Component
