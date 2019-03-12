@@ -63,7 +63,7 @@ public class KmxProxyConfiguration {
         portMap.put("batch-rest", Integer.parseInt(kmxPortBatchRest));
         portMap.put("object-rest", Integer.parseInt(kmxPortObjectRest));
         portMap.put("file-rest", Integer.parseInt(kmxPortFileRest));
-        portMap.put("pas-services",Integer.parseInt( kmxPortPasServices));
+        portMap.put("pas/services",Integer.parseInt( kmxPortPasServices));
         portMap.put("ecf-rest", Integer.parseInt(kmxPortEcfRest));
         portMap.put("meter/v1", Integer.parseInt(kmxPortMeterV1));
         portMap.put("auth-service", Integer.parseInt(kmxPortAuthService));
