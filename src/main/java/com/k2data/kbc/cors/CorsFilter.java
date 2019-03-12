@@ -24,24 +24,13 @@ public class CorsFilter implements Filter {
 
         HttpServletResponse response = (HttpServletResponse) res;
 
-        //加条件判断以免重复添加同名header（考虑kmx反向代理的例子）
-        if (response.getHeader("Access-Control-Allow-Origin") == null) {
-            response.setHeader("Access-Control-Allow-Origin", "*");
-        }
-        if (response.getHeader("Access-Control-Allow-Methods") == null) {
-            response.setHeader("Access-Control-Allow-Methods",
-                    "POST, GET, OPTIONS, PUT, DELETE");
-        }
-        if (response.getHeader("Access-Control-Allow-Credentials") == null) {
-            response.setHeader("Access-Control-Allow-Credentials", "true");
-        }
-        if (response.getHeader("Access-Control-Max-Age") == null) {
-            response.setHeader("Access-Control-Max-Age", "3600");
-        }
-        if (response.getHeader("Access-Control-Allow-Headers") == null) {
-            response.setHeader("Access-Control-Allow-Headers",
-                    "Content-Type, x-requested-with, X-Custom-Header, Authorization");
-        }
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods",
+                "POST, GET, OPTIONS, PUT, DELETE");
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers",
+                "Content-Type, x-requested-with, X-Custom-Header, Authorization");
 
         chain.doFilter(req, res);
     }
