@@ -28,7 +28,7 @@ import java.util.Base64;
 /**
  * Created by zhanghao on 2019/3/11.
  */
-@Api
+@Api("KMX用户验证接口")
 @Configuration
 @RestController
 public class KmxLoginController {
@@ -44,10 +44,6 @@ public class KmxLoginController {
 
     @ApiOperation("验证KMX用户密码")
     @PostMapping(value = "kmx_login")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "username", value = "KMX用户名", required = true),
-//            @ApiImplicitParam(name = "password", value = "KMX用户密码", required = true)
-//    })
     KbcResponse login(@RequestBody LoginRequest req) throws KbcException {
         if (req.getUsername() == null || req.getUsername().isEmpty()) {
             throw new KbcBizException("请输入用户名");
