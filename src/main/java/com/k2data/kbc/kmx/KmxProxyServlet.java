@@ -70,7 +70,8 @@ public class KmxProxyServlet extends ProxyServlet {
         //在配置了CORS filter的环境下，会导致重复添加header，且在filter里不容易解决
         //在这里重新配置一次header可以解决重复header的问题
         //这段代码会在doFilter()之后执行
-        servletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        //servletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        servletResponse.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");//FIXME: 暂时方案
         servletResponse.setHeader("Access-Control-Allow-Methods",
                 "POST, GET, OPTIONS, PUT, DELETE");
         servletResponse.setHeader("Access-Control-Allow-Credentials", "true");
