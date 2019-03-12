@@ -1,7 +1,13 @@
 # kbc-template-nf
 
 ## 功能
-基于SprintBoot的java项目脚手架代码
+基于SprintBoot的java项目脚手架代码，内置的基本功能如下：
+- Api文档：Swagger
+- 异常处理：抽象类KbcException和几个实现类
+- 响应封装：KbcResponse
+- 跨域请求：CORS
+- KMX请求代理：/kmx/*
+- KMX用户验证：/kmx_login
 
 ## 维护者
 wangyanan
@@ -40,7 +46,8 @@ git subtree add -P src/main/java/com/k2data/kbc/announce kbc-announce master --s
 git remote -vv
 
 #验证代码是否能正常启动
-#启动后可通过浏览器访问，默认地址http://localhost:9080
+#通过浏览器访问http://localhost:9080/home，应可以看到欢迎语。
+#接口文档地址http://localhost:9080/swagger-ui.html
 mvn spring-boot:run
 
 #开发代码，其中可能修改项目代码，也可能修改组件代码...（此处省略10000字）
