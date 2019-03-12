@@ -58,3 +58,25 @@ git subtree pull -P src/main/java/com/k2data/kbc/announce kbc-announce v2.0 --sq
 #先执行下面的命令，然后提交一个PR给组件管理员审核，后者决定是否合并到master
 git subtree push -P src/main/java/com/k2data/kbc/announce kbc-announce branch1
 ```
+#kbc.sh
+这个脚本用于简化书写git subtree命令，因为后者比较长而且需要重复书写组件名称。
+此脚本在subtree -P参数中会自动把组件名称中所有的"-"转换为"/"，例如kbc-announce会转换为kbc/announce。
+脚本使用方法如下：
+```shell
+./kbc.sh add <component> <branch>
+相当于：
+git remote add -f <component> git@github.com:k2jf/<component>.git
+git subtree add -P src/main/java/com/k2data/<component> kbc-announce <branch>
+
+./kbc.sh pull <component> <branch>
+相当于：
+git subtree pull -P src/main/java/com/k2data/<component> <component> <branch>
+
+./kbc.sh push <component> <branch>
+相当于：
+git subtree push -P src/main/java/com/k2data/<component> <component> <branch>
+```
+如果是在cygwin环境下使用，请将core.autocrlf配置为input以便脚本能够正确运行：
+```
+git config --global core.autocrlf input
+```
