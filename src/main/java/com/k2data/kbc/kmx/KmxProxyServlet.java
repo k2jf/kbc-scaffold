@@ -1,5 +1,6 @@
 package com.k2data.kbc.kmx;
 
+import org.apache.catalina.connector.ResponseFacade;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.message.BasicHeader;
@@ -9,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -63,6 +65,18 @@ public class KmxProxyServlet extends ProxyServlet {
         servletRequest.setAttribute(ATTR_TARGET_HOST, new HttpHost(kmxHost, port));
 
         super.service(servletRequest, servletResponse);
+
+        //KMX接口会返回CORS headers
+        //在配置了CORS filter的环境下，会导致重复添加header，且在filter里不容易解决
+        //在这里重新配置一次header可以解决重复header的问题
+        servletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        servletResponse.setHeader("Access-Control-Allow-Methods",
+                "POST, GET, OPTIONS, PUT, DELETE");
+        servletResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        servletResponse.setHeader("Access-Control-Max-Age", "3600");
+        servletResponse.setHeader("Access-Control-Allow-Headers",
+                "Content-Type, x-requested-with, X-Custom-Header, Authorization");
+
     }
 
     @Override

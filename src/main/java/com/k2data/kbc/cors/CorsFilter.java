@@ -22,9 +22,6 @@ public class CorsFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse res,
                          FilterChain chain) throws IOException, ServletException {
 
-        //处理逻辑放在chain.doFilter之后进行
-        chain.doFilter(req, res);
-
         HttpServletResponse response = (HttpServletResponse) res;
 
         //加条件判断以免重复添加同名header（考虑kmx反向代理的例子）
@@ -46,10 +43,11 @@ public class CorsFilter implements Filter {
                     "Content-Type, x-requested-with, X-Custom-Header, Authorization");
         }
 
+        chain.doFilter(req, res);
     }
 
     @Override
     public void destroy() {
-        // TODO Auto-generated method stub
+
     }
 }
