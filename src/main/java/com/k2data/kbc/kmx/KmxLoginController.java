@@ -3,6 +3,10 @@ package com.k2data.kbc.kmx;
 import com.k2data.kbc.api.KbcBizException;
 import com.k2data.kbc.api.KbcException;
 import com.k2data.kbc.api.KbcResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -14,7 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -22,6 +28,7 @@ import java.util.Base64;
 /**
  * Created by zhanghao on 2019/3/11.
  */
+@Api
 @Configuration
 @RestController
 public class KmxLoginController {
@@ -35,7 +42,12 @@ public class KmxLoginController {
     private String kmxPortAuthService;
 
 
-    @RequestMapping(value = "kmx_login", method = RequestMethod.POST)
+    @ApiOperation("验证KMX用户密码")
+    @PostMapping(value = "kmx_login")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "username", value = "KMX用户名", required = true),
+//            @ApiImplicitParam(name = "password", value = "KMX用户密码", required = true)
+//    })
     KbcResponse login(@RequestBody LoginRequest req) throws KbcException {
         if (req.getUsername() == null || req.getUsername().isEmpty()) {
             throw new KbcBizException("请输入用户名");
@@ -44,10 +56,11 @@ public class KmxLoginController {
             throw new KbcBizException("请输入密码");
         }
 
-        logger.info("Validating user password with KMX...");
         boolean valid = false;
         CloseableHttpClient client = HttpClientBuilder.create().build();
-        HttpGet httpGet = new HttpGet("http://" + kmxHost + ":" + kmxPortAuthService + "/auth-service/v1/health/check_login");
+        String kmxUrl = "http://" + kmxHost + ":" + kmxPortAuthService + "/auth-service/v1/health/check_login";
+        logger.info("Authenticating with " + kmxUrl);
+        HttpGet httpGet = new HttpGet(kmxUrl);
         String basicAuthToken = makeKmxBasicAuthToken(req.getUsername(), req.getPassword());
         httpGet.addHeader(new BasicHeader("Authorization", basicAuthToken));
         try {
@@ -63,9 +76,11 @@ public class KmxLoginController {
             }
         }
 
-        if (!valid) {
-            throw new KbcBizException("验证未通过");
-        }
+        //kmx的basic auth调用有问题，解决中
+        //暂时放行所有请求
+//        if (!valid) {
+//            throw new KbcBizException("验证未通过");
+//        }
 
         return KbcResponse.SUCCESS; //dummy implementation
     }
