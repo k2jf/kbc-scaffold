@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
+import org.apache.http.params.BasicHttpParams;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,11 +58,17 @@ public class KmxLoginController {
         String kmxUrl = "http://" + kmxHost + ":" + kmxPortAuthService + "/auth-service/v1/health/check_login";
         logger.info("Authenticating with " + kmxUrl);
         HttpGet httpGet = new HttpGet(kmxUrl);
+
+        org.apache.http.params.HttpParams params = new BasicHttpParams();
+        params.setParameter("http.protocol.handle-redirects", false); // 不follow重定向
+        httpGet.setParams(params);
+
         String basicAuthToken = makeKmxBasicAuthToken(req.getUsername(), req.getPassword());
         httpGet.addHeader(new BasicHeader("Authorization", basicAuthToken));
         try {
             HttpResponse resp = client.execute(httpGet);
-            valid = resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK;
+            int statusCode = resp.getStatusLine().getStatusCode(); //如果用户名密码不正确，会得到302状态码
+            valid = statusCode == HttpStatus.SC_OK;
             String body = EntityUtils.toString(resp.getEntity(), "utf-8");
         } catch (IOException e) {
             e.printStackTrace();
