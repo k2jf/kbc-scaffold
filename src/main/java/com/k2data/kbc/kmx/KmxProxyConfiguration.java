@@ -52,6 +52,9 @@ public class KmxProxyConfiguration {
     @Value("${kbc.kmx.port.auth.service}")
     private String kmxPortAuthService;
 
+    @Value("${kbc.cors.allow.origin}")
+    private String corsAllowOrigin;
+
     @Bean
     public ServletRegistrationBean servletRegistrationBean() {
 
@@ -72,6 +75,7 @@ public class KmxProxyConfiguration {
         servletRegistrationBean.addInitParameter("targetHost", kmxHost);
         servletRegistrationBean.addInitParameter("targetUri", "");
         servletRegistrationBean.addInitParameter("k2key", kmxK2Key);
+        servletRegistrationBean.addInitParameter("corsAllowOrigin", corsAllowOrigin);
         servletRegistrationBean.addInitParameter(ProxyServlet.P_LOG, "true");
         return servletRegistrationBean;
     }

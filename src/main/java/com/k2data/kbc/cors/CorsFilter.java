@@ -1,8 +1,11 @@
 package com.k2data.kbc.cors;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -12,7 +15,12 @@ import java.io.IOException;
  * https://www.cnblogs.com/yoyotl/p/7090996.html
  */
 @Component
+@Configuration
 public class CorsFilter implements Filter {
+
+    @Value("${kbc.cors.allow.origin}")
+    private String corsAllowOrigin;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -24,8 +32,14 @@ public class CorsFilter implements Filter {
 
         HttpServletResponse servletResponse = (HttpServletResponse) res;
 
-        //servletResponse.setHeader("Access-Control-Allow-Origin", "*");
-        servletResponse.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");//FIXME: 暂时方案
+        //Header名称不区分大小写
+        //servletResponse.setHeader("Access-Control-Allow-Origin", "*"); //客户端withCredential时不被允许使用"*"
+        if(corsAllowOrigin!=null &&!corsAllowOrigin.isEmpty()) {
+            servletResponse.setHeader("Access-Control-Allow-Origin", corsAllowOrigin);
+        }else{
+            String requestOriginHeader = ((HttpServletRequest)req).getHeader("Origin");
+            servletResponse.setHeader("Access-Control-Allow-Origin", requestOriginHeader);
+        }
         servletResponse.setHeader("Access-Control-Allow-Methods",
                 "POST, GET, OPTIONS, PUT, DELETE");
         servletResponse.setHeader("Access-Control-Allow-Credentials", "true");

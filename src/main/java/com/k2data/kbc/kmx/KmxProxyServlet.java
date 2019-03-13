@@ -71,7 +71,13 @@ public class KmxProxyServlet extends ProxyServlet {
         //在这里重新配置一次header可以解决重复header的问题
         //这段代码会在doFilter()之后执行
         //servletResponse.setHeader("Access-Control-Allow-Origin", "*");
-        servletResponse.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");//FIXME: 暂时方案
+        String corsAllowOrigin = getConfigParam("corsAllowOrigin");
+        if (corsAllowOrigin != null && !corsAllowOrigin.isEmpty()) {
+            servletResponse.setHeader("Access-Control-Allow-Origin", corsAllowOrigin);
+        } else {
+            String requestOriginHeader = servletRequest.getHeader("Origin");
+            servletResponse.setHeader("Access-Control-Allow-Origin", requestOriginHeader);
+        }
         servletResponse.setHeader("Access-Control-Allow-Methods",
                 "POST, GET, OPTIONS, PUT, DELETE");
         servletResponse.setHeader("Access-Control-Allow-Credentials", "true");
