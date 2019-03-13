@@ -1,6 +1,19 @@
 #!/bin/bash
-if [ $# == 0 ]; then
+if [ $# != 3 ]; then
   echo "Usage: kbc <add|pull|push> <component> <branch>"
+  exit 2
+fi
+
+#Check if command exists
+if [ $1 != "add" -a $1 != "pull" -a $1 != "push" ]; then
+  echo "Unknown command: $1"
+  exit 2
+fi
+
+#Check if the component and branch exist
+line=`git ls-remote git@github.com:k2jf/$2.git|grep "/$3$"|wc -l`
+if [ $line == 0 ]; then
+  echo "Component or branch does not exist: $2 $3"
   exit 2
 fi
 
@@ -32,6 +45,4 @@ elif [ $1 == "push" ]; then
   else
     echo "Usage: kbc push <component> <branch>"
   fi
-else
-  echo "unknown command: $1"
 fi
