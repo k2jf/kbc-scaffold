@@ -34,6 +34,7 @@ public class CorsFilter implements Filter {
 
         //Header名称不区分大小写
         //servletResponse.setHeader("Access-Control-Allow-Origin", "*"); //客户端withCredential时不被允许使用"*"
+        servletResponse.getHeader("Access-Control-Allow-Origin");
         if(corsAllowOrigin!=null &&!corsAllowOrigin.isEmpty()) {
             servletResponse.setHeader("Access-Control-Allow-Origin", corsAllowOrigin);
         }else{
