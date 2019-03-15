@@ -74,7 +74,7 @@ git subtree push -P src/main/java/com/k2data/kbc/announce kbc-announce branch1
 ./kbc.sh add <component> <branch>
 相当于：
 git remote add -f <component> git@github.com:k2jf/<component>.git
-git subtree add -P src/main/java/com/k2data/<component> kbc-announce <branch>
+git subtree add -P src/main/java/com/k2data/<component> <component> <branch>
 
 ./kbc.sh pull <component> <branch>
 相当于：
