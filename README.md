@@ -2,12 +2,10 @@
 
 ## 功能
 基于SprintBoot的java项目脚手架代码，内置的基本功能如下：
-- Api文档：Swagger
+- Api文档：使用Swagger生成
 - 异常处理：抽象类KbcException和几个实现类
-- 响应封装：KbcResponse
-- 跨域请求：CORS
-- KMX请求代理：/kmx/*
-- KMX用户验证：/kmx_login
+- 响应封装：抽象类KbcResponse和KbcBizException等几个实现
+- 跨域请求：响应自动添加Access-Control-Allow-Origin等header（CorsFilter）
 
 ## 维护者
 wangyanan
