@@ -1,6 +1,5 @@
 package com.k2data.kbc.api;
 
-import org.apache.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,7 +25,7 @@ public class KbcExceptionHandler {
     @ResponseBody
     public KbcResponse generalException(HttpServletResponse httpResp, Exception e) {
         KbcResponse kbcResp = new KbcResponse(e.getMessage());
-        httpResp.setStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR); //500
+        httpResp.setStatus(500); //Internal
         return kbcResp;
     }
 }

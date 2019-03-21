@@ -9,10 +9,11 @@ import java.util.Map;
  */
 public class KbcResponse {
 
-    public static KbcResponse SUCCESS = new KbcResponse("success");
+    public static KbcResponse SUCCESS = new KbcResponse("success"); //快捷方式（KbcResponse.SUCCESS）
 
-    private String message = "";
-    private Map<String, Object> body = new HashMap<>();
+    private String message = ""; //一般在非200情况下才返回消息
+
+    private Map<String, Object> body = new HashMap<>(); //用于存放实际的业务数据
 
     public KbcResponse() {
     }
