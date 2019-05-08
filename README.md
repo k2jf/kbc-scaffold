@@ -1,4 +1,4 @@
-# kbc-template-nf
+# kbc-scaffold
 
 ## 功能
 基于SprintBoot的java项目脚手架代码，内置的基本功能如下：
@@ -32,7 +32,7 @@ git remote add origin https://github.com/k2jf/kbc-demo.git
 #由于框架代码在项目根目录下，因此我们让这些代码下载后关联到项目repo而不再是框架组件的repo
 #下载后仍然可以pull框架代码，但不可以再push（会加入不必要的代码）
 #注意：如果项目里已经包含了框架代码，则不要执行此步骤
-git pull --allow-unrelated-histories git@github.com:k2jf/kbc-template-nf.git master
+git pull --allow-unrelated-histories git@github.com:k2jf/kbc-scaffold.git master
 
 #从组件库里下载每个组件代码，-P参数指定组件在项目里所在的目录
 #并按每个组件README文件集成到项目

@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.k2data.kbc</groupId>
-    <artifactId>kbc-template-nf</artifactId>
+    <artifactId>kbc-scaffold</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>kbc-template-nf</name>
+    <name>kbc-scaffold</name>
     <description>This is a template for kbc based projects</description>
 
     <properties>
